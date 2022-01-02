@@ -69,14 +69,6 @@ public class NBody {
 			StdDraw.show();
 			StdDraw.pause(10);
 		}
-// double xxPos = in.readDouble();
-// 			double yyPos = in.readDouble();
-// 			double xxVel = in.readDouble();
-// 			double yyVel = in.readDouble();
-// 			double mass = in.readDouble();
-// 			String imgFileName = in.readString();
-// 			Planet planet = new Planet(xxPos, yyPos, xxVel, yyVel, mass, imgFileName);
-// 			planets[i] = planet;
 	
 		StdOut.printf("%d\n", n);
 		StdOut.printf("%.2e\n", radius);
