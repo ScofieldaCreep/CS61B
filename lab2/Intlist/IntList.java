@@ -80,57 +80,63 @@ public class IntList {
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
 
+//    public static IntList dcatenate(IntList A, IntList B) {
+//        //TODO:  fill in method
+//        // 假设A本身就为null的情况
+//        if (A == null) {
+//            return B;
+//        }
+//
+//        IntList pt = A;
+//        while (pt.rest != null) {
+//            pt = pt.rest;
+//        }
+//        pt.rest = B;
+//        return A;
+//    }
+
+    // Recursive Version
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        // 假设A本身就为null的情况
         if (A == null) {
             return B;
         }
-
-        IntList pt = A;
-        while (pt.rest != null) {
-            pt = pt.rest;
-        }
-        pt.rest = B;
+        A.rest = dcatenate(A.rest, B);
         return A;
     }
+
 
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
+//    public static IntList catenate(IntList A, IntList B) {
+//        //TODO:  fill in method
+//        if (A == null) {
+//            return B;
+//        }
+//        IntList res = new IntList(A.first, null);
+//        IntList ptrA = A.rest;
+//        IntList ptr = res;
+//
+//        while (ptrA != null) {
+//            ptr.rest = new IntList(ptrA.first, null);
+//            ptr = ptr.rest;
+//            ptrA = ptrA.rest;
+//        }
+//        ptr.rest = B;
+//        return res;
+//    }
+
+    // Recursive Version
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
         if (A == null) {
-            return B;
+            if (B == null) {
+                return null;
+            }
+            return new IntList(B.first, catenate(A, B.rest));
         }
-        IntList res = new IntList(A.first, null);
-        IntList ptrA = A.rest;
-        IntList ptr = res;
-
-        while (ptrA != null) {
-            ptr.rest = new IntList(ptrA.first, null);
-            ptr = ptr.rest;
-            ptrA = ptrA.rest;
-        }
-        ptr.rest = B;
-        return res;
+        return new IntList(A.first, catenate(A.rest, B));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * DO NOT MODIFY ANYTHING BELOW THIS LINE! Many of the concepts below here
