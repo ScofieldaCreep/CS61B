@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         sentinel.prev = sentinel.next = sentinel;
         size = 0;
     }
-
+/*
     // Create a copy of another list
     public LinkedListDeque(LinkedListDeque other) {
         this(); // 无需重复书写建立空列表的方法，'this();'即可
@@ -33,6 +33,7 @@ public class LinkedListDeque<T> {
         }
         size = other.size();
     }
+*/
 
     public void addFirst(T item) {
         TypeNode temp = new TypeNode(item, sentinel, sentinel.next);

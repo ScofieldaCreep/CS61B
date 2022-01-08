@@ -15,6 +15,7 @@ public class ArrayDeque<T> {
         nextLast = 4;
     }
 
+    /*
     public ArrayDeque(ArrayDeque other) {
         size = other.size;
         nextFirst = other.nextFirst;
@@ -24,6 +25,7 @@ public class ArrayDeque<T> {
             items[i] = (T) other.items[i];
         }
     }
+     */
 
     public void addFirst(T item) {
         if (items[nextFirst] != null) {
@@ -174,5 +176,4 @@ public class ArrayDeque<T> {
             return items[index - items.length + first];
         }
     }
-
 }
