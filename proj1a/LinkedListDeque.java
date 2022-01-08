@@ -1,14 +1,12 @@
-import java.lang.reflect.Type;
-
 public class LinkedListDeque<T> {
 
     // 创建一个基本node单元
     private class TypeNode {
-        public T item;
-        public TypeNode prev;
-        public TypeNode next;
+        private T item;
+        private TypeNode prev;
+        private TypeNode next;
 
-        public TypeNode(T i, TypeNode prev, TypeNode next) {
+        TypeNode(T i, TypeNode prev, TypeNode next) {
             this.prev = prev;
             this.item = i;
             this.next = next;
@@ -59,7 +57,7 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         if (isEmpty()) {
-            return ;
+            return;
         }
         TypeNode p = sentinel.next;
         while (p.next != sentinel) {
@@ -100,7 +98,7 @@ public class LinkedListDeque<T> {
         }
 
         TypeNode p = sentinel;
-        for(int i = 0; i <= index; i++) {
+        for (int i = 0; i <= index; i++) {
             p = p.next;
         }
         return p.item;
@@ -115,14 +113,13 @@ public class LinkedListDeque<T> {
         return helper(index, p);
     }
 
-        private T helper(int index, TypeNode p) {
-            if (index == 0) {
-                return p.item;
-            }
-            else {
-                return helper(--index, p.next);
-            }
+    private T helper(int index, TypeNode p) {
+        if (index == 0) {
+            return p.item;
+        } else {
+            return helper(--index, p.next);
         }
+    }
 
 }
 

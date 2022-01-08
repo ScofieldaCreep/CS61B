@@ -1,6 +1,3 @@
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-
 public class ArrayDeque<T> {
 
     private T[] items;
@@ -48,7 +45,7 @@ public class ArrayDeque<T> {
         items[nextLast] = item;
         size++;
         nextLast++;
-        if(nextLast == items.length) {
+        if (nextLast == items.length) {
             nextLast = 0;
         }
     }
@@ -61,8 +58,7 @@ public class ArrayDeque<T> {
         T temp;
         if (nextFirst + 1 == items.length) {
             nextFirst = 0;
-        }
-        else {
+        } else {
             nextFirst++;
         }
         temp = items[nextFirst];
@@ -80,8 +76,7 @@ public class ArrayDeque<T> {
         T temp;
         if (nextLast == 0) {
             nextLast = items.length - 1;
-        }
-        else {
+        } else {
             nextLast--;
         }
         temp = items[nextLast];
@@ -92,13 +87,13 @@ public class ArrayDeque<T> {
     }
 
     private void expandArray() {
-        int newSize = size * 2;
+        int newSize = (int) (size * 1.5);
         T[] newArray = (T[]) new Object[newSize];
         T[] temp = iterateArray();
         int newIndex = (int) size / 2;
         nextFirst = newIndex - 1;
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             newArray[newIndex] = temp[i];
             newIndex++;
         }
@@ -114,7 +109,7 @@ public class ArrayDeque<T> {
         int newIndex = (int) newSize / 4;
         nextFirst = newIndex - 1;
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             newArray[newIndex] = temp[i];
             newIndex++;
         }
@@ -134,14 +129,12 @@ public class ArrayDeque<T> {
         while (curSize > 0) {
             if (first >= items.length) {
                 first = 0;
-            }
-            else if (items[first] != null) {
+            } else if (items[first] != null) {
                 newArray[index] = items[first];
                 first++;
                 index++;
                 curSize--;
-            }
-            else {
+            } else {
                 first++;
             }
         }
@@ -150,7 +143,7 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         T[] temp = iterateArray();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(temp[i].toString() + " ");
         }
         System.out.println();
@@ -165,14 +158,13 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        if(index > size) {
+        if (index > size) {
             return null;
         }
         int first = nextFirst + 1;
-        if(index + first < items.length) {
+        if (index + first < items.length) {
             return items[index + first];
-        }
-        else {
+        } else {
             return items[index - items.length + first];
         }
     }
