@@ -90,7 +90,7 @@ public class ArrayDeque<T> {
         int newSize = (int) (size * 1.5);
         T[] newArray = (T[]) new Object[newSize];
         T[] temp = iterateArray();
-        int newIndex = (int) size / 2;
+        int newIndex = (int) (size / 1.5);
         nextFirst = newIndex - 1;
 
         for (int i = 0; i < size; i++) {
