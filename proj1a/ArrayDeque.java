@@ -1,5 +1,3 @@
-import java.awt.*;
-
 public class ArrayDeque<T> {
     private T[] items;
     private int size;
@@ -103,7 +101,7 @@ public class ArrayDeque<T> {
         resize();
         T removed = getLast();
         nextBack = minusOne(nextBack);
-        items[nextLast] = null;
+        items[nextBack] = null;
         size--;
         return removed;
     }
