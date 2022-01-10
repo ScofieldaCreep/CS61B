@@ -78,7 +78,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
         resize();
@@ -101,7 +101,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
         resize();
