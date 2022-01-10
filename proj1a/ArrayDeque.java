@@ -47,7 +47,7 @@ public class ArrayDeque<T> {
     }
 
     private void reduce() {
-        helper((int) (items.length * 0.5));
+        helper(items.length / 2);
     }
 
     private void helper(int newSize) {
@@ -58,7 +58,7 @@ public class ArrayDeque<T> {
         nextFront = 0;
         nextBack = 1;
 
-        for (int i = begin; i != end; plusOne(i, temp.length)) {
+        for (int i = begin; i != end; i = plusOne(i, temp.length)) {
             items[nextBack] = (T) temp[i];
             nextBack = plusOne(nextBack);
         }
@@ -119,18 +119,5 @@ public class ArrayDeque<T> {
         }
         index = Math.floorMod(plusOne(nextFront) + index, items.length);
         return items[index];
-    }
-
-    public static void main(String[] args) {
-        ArrayDeque<Integer> aq = new ArrayDeque<Integer>();
-        for (int i = 0; i < 100; i++) {
-            aq.addLast(i);
-        }
-        aq.printDeque();
-        for (int i = 0; i < 98; i++) {
-            aq.removeFirst();
-        }
-        aq.printDeque();
-        System.out.println(aq.get(0));
     }
 }
