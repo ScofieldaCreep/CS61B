@@ -78,6 +78,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if(isEmpty()) {
+            return null;
+        }
         resize();
         T removed = getFirst();
         nextFront = plusOne(nextFront);
@@ -98,6 +101,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if(isEmpty()) {
+            return null;
+        }
         resize();
         T removed = getLast();
         nextBack = minusOne(nextBack);
