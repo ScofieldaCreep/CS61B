@@ -1,129 +1,126 @@
+import java.awt.*;
+
 public class ArrayDeque<T> {
     private T[] items;
-    private int prev;
-    private int next;
-    private int capacity = 8;
+    private int size;
+    private int nextFront;
+    private int nextBack;
+    private final int capacity = 8;
 
     public ArrayDeque() {
         items = (T[]) new Object[capacity];
-        prev = next = 0;
+        size = 0;
+        nextFront = 0;
+        nextBack = 1;
     }
-
-    /* Adds an item of type T to the front of the deque. */
-    public void addFirst(T item) {
-        if (isFull()) {
-            resize((int) (capacity * 1.5));
-            // Remember to update the num of capacity in the func: resize;
-        }
-        items[prev] = item;
-        prev = (prev - 1 + capacity) % capacity;
-    }
-
-    public void addLast(T item) {
-        if (isFull()) {
-            resize((int) (capacity * 1.5));
-        }
-        items[next] = item;
-        next = (next + 1 + capacity) % capacity;
-    }
-
-    public void printDeque() {
-        if (prev < next) {
-            for (int i = prev; i < next; i++) {
-                if (i == next - 1) {
-                    System.out.println(items[i]);
-                    break;
-                }
-                System.out.print(items[i] + " ");
-            }
-        } else if (prev > next) {
-            for (int i = prev; i < capacity; i++) {
-                System.out.print(items[i] + " ");
-            }
-            for (int i = 0; i < next; i++) {
-                if (i == next - 1) {
-                    System.out.println(items[i]);
-                    break;
-                }
-                System.out.print(items[i] + " ");
-            }
-        }
-    }
-
-    public T removeFirst() {
-        if (isEmpty()) {
-            return null;
-        }
-        T removed = items[prev];
-        prev = (prev + 1) % capacity;
-        if (isLowUsageRate()) {
-            resize((int) (capacity * 0.5));
-        }
-        return removed;
-    }
-
-    public T removeLast() {
-        if (isEmpty()) {
-            return null;
-        }
-        T removed = items[next];
-        next = (next - 1) % capacity;
-        if (isLowUsageRate()) {
-            resize((int) (capacity * 0.5));
-        }
-        return removed;
-    }
-
-
-    public T get(int index) {
-        if (index < 0 || index >= size() || isEmpty()) {
-            return null;
-        }
-        if (prev < next) {
-            return items[prev + index];
-        } else if (prev > next) {
-            return items [(prev + index) % capacity];
-        }
-        return null;
-    }
-
 
     public int size() {
-        return (next - prev + capacity) % capacity;
-    }
-
-    public boolean isFull() {
-        return size() == capacity - 1;
+        return size;
     }
 
     public boolean isEmpty() {
-        return prev == next;
+        return size == 0;
     }
 
-    private boolean isLowUsageRate() {
-        return capacity >= 16 && size() / (double) capacity < 0.25;
+    public int minusOne(int index) {
+        return Math.floorMod(index - 1, items.length);
     }
 
-    private void resize(int newSize) {
-        T[] temp = (T[]) new Object[newSize];
+    public int plusOne(int index) {
+        return Math.floorMod(index + 1, items.length);
+    }
 
-        int size = size();
-        if (prev < next) {
-            for (int i = prev, j = 0; i < next && j < size; i++, j++) {
-                temp[j] = items[i];
-            }
-        } else if (prev > next) {
-            int j = 0;
-            for (int i = prev; j < capacity - prev; i++, j++) {
-                temp[j] = items[i];
-            }
-            for (int i = 0; j < size; i++, j++) {
-                temp[j] = items[i];
-            }
+    public int plusOne(int index, int length) {
+        return Math.floorMod(index + 1, length);
+    }
+
+    private void resize() {
+        if (size == items.length) {
+            expand();
         }
-        prev = 0;
-        next = size;
-        items = temp;
-        capacity = newSize;
+
+        if (size < items.length / 4 && items.length >= 16) {
+            reduce();
+        }
     }
+
+    private void expand() {
+        helper((int) (items.length * 1.5));
+    }
+
+    private void reduce() {
+        helper((int) (items.length * 0.5));
+    }
+
+    private void helper(int newSize) {
+        T[] temp = items;
+        int begin = plusOne(nextFront);
+        int end = minusOne(nextBack);
+        items = (T[]) new Object[newSize];
+        nextFront = 0;
+        nextBack = 1;
+
+        for (int i = begin; i != end; plusOne(i, temp.length)) {
+            items[nextBack] = temp[i];
+            nextBack = plusOne(nextBack);
+        }
+        items[nextBack] = temp[end];
+        nextBack = plusOne(nextBack);
+    }
+
+    public void addFirst(T item) {
+        resize();
+        items[nextFront] = item;
+        nextFront = minusOne(nextFront);
+        size++;
+    }
+
+    public T getFirst() {
+        return items[plusOne(nextFront)];
+    }
+
+    public T removeFirst() {
+        resize();
+        T removed = getFirst();
+        nextFront = plusOne(nextFront);
+        items[nextFront] = null;
+        size--;
+        return removed;
+    }
+
+    public void addLast(T item) {
+        resize();
+        items[nextBack] = item;
+        nextBack = plusOne(nextFront);
+        size++;
+    }
+
+    public T getLast() {
+        return items[minusOne(nextFront)];
+    }
+
+    public T removeLast() {
+        resize();
+        T removed = getLast();
+        nextBack = minusOne(nextBack);
+        items[nextLast] = null;
+        size--;
+        return removed;
+    }
+
+    public void printDeque() {
+        for (int i = plusOne(nextFront); i != nextBack; i = plusOne(i)) {
+            System.out.print(items[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public T get(int index) {
+        if (index < 0 || index > items.length) {
+            return null;
+        }
+        index = Math.floorMod(plusOne(nextFront) + index, items.length);
+        return items[index];
+    }
+
 }
