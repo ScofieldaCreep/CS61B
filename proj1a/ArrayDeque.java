@@ -1,171 +1,129 @@
 public class ArrayDeque<T> {
-
     private T[] items;
-    private int size;
-    private int nextFirst;
-    private int nextLast;
+    private int prev;
+    private int next;
+    private int capacity = 8;
 
     public ArrayDeque() {
-        items = (T[]) new Object[8];
-        size = 0;
-        nextFirst = 3;
-        nextLast = 4;
+        items = (T[]) new Object[capacity];
+        prev = next = 0;
     }
 
-    /*
-    public ArrayDeque(ArrayDeque other) {
-        size = other.size;
-        nextFirst = other.nextFirst;
-        nextLast = other.nextLast;
-        items = (T[]) new Object[other.items.length];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = (T) other.items[i];
-        }
-    }
-     */
-
+    /* Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        if (items[nextFirst] != null) {
-            expandArray();
+        if (isFull()) {
+            resize((int) (capacity * 1.5));
+            // Remember to update the num of capacity in the func: resize;
         }
-
-        items[nextFirst] = item;
-        size++;
-        nextFirst--;
-        if (nextFirst < 0) {
-            nextFirst = items.length - 1;
-        }
+        items[prev] = item;
+        prev = (prev - 1 + capacity) % capacity;
     }
 
     public void addLast(T item) {
-        if (items[nextLast] != null) {
-            expandArray();
+        if (isFull()) {
+            resize((int) (capacity * 1.5));
         }
+        items[next] = item;
+        next = (next + 1 + capacity) % capacity;
+    }
 
-        items[nextLast] = item;
-        size++;
-        nextLast++;
-        if (nextLast == items.length) {
-            nextLast = 0;
+    public void printDeque() {
+        if (prev < next) {
+            for (int i = prev; i < next; i++) {
+                if (i == next - 1) {
+                    System.out.println(items[i]);
+                    break;
+                }
+                System.out.print(items[i] + " ");
+            }
+        } else if (prev > next) {
+            for (int i = prev; i < capacity; i++) {
+                System.out.print(items[i] + " ");
+            }
+            for (int i = 0; i < next; i++) {
+                if (i == next - 1) {
+                    System.out.println(items[i]);
+                    break;
+                }
+                System.out.print(items[i] + " ");
+            }
         }
     }
 
     public T removeFirst() {
-        if (size <= 0) {
+        if (isEmpty()) {
             return null;
         }
-
-        T temp;
-        if (nextFirst + 1 == items.length) {
-            nextFirst = 0;
-        } else {
-            nextFirst++;
+        T removed = items[prev];
+        prev = (prev + 1) % capacity;
+        if (isLowUsageRate()) {
+            resize((int) (capacity * 0.5));
         }
-        temp = items[nextFirst];
-        items[nextFirst] = null;
-        size--;
-
-        return temp;
+        return removed;
     }
 
     public T removeLast() {
-        if (size <= 0) {
+        if (isEmpty()) {
             return null;
         }
-
-        T temp;
-        if (nextLast == 0) {
-            nextLast = items.length - 1;
-        } else {
-            nextLast--;
+        T removed = items[next];
+        next = (next - 1) % capacity;
+        if (isLowUsageRate()) {
+            resize((int) (capacity * 0.5));
         }
-        temp = items[nextLast];
-        items[nextLast] = null;
-        size--;
-
-        return temp;
-    }
-
-    private void expandArray() {
-        int newSize = (int) (size * 1.5);
-        T[] newArray = (T[]) new Object[newSize];
-        T[] temp = iterateArray();
-        int newIndex = (int) (size / 1.5);
-        nextFirst = newIndex - 1;
-
-        for (int i = 0; i < size; i++) {
-            newArray[newIndex] = temp[i];
-            newIndex++;
-        }
-
-        nextLast = newIndex;
-        items = newArray;
-    }
-
-    private void shrinkArray() {
-        int newSize = (int) items.length / 2;
-        T[] newArray = (T[]) new Object[newSize];
-        T[] temp = iterateArray();
-        int newIndex = (int) newSize / 4;
-        nextFirst = newIndex - 1;
-
-        for (int i = 0; i < size; i++) {
-            newArray[newIndex] = temp[i];
-            newIndex++;
-        }
-
-        nextLast = newIndex;
-        items = newArray;
+        return removed;
     }
 
 
-
-    private T[] iterateArray() {
-        int first = nextFirst + 1;
-        int curSize = this.size;
-        int index = 0;
-        T[] newArray = (T[]) new Object[curSize];
-
-        while (curSize > 0) {
-            if (first >= items.length) {
-                first = 0;
-            } else if (items[first] != null) {
-                newArray[index] = items[first];
-                first++;
-                index++;
-                curSize--;
-            } else {
-                first++;
-            }
+    public T get(int index) {
+        if (index < 0 || index >= size() || isEmpty()) {
+            return null;
         }
-        return newArray;
+        if (prev < next) {
+            return items[prev + index];
+        } else if (prev > next) {
+            return items [(prev + index) % capacity];
+        }
+        return null;
     }
 
-    public void printDeque() {
-        T[] temp = iterateArray();
-        for (int i = 0; i < size; i++) {
-            System.out.print(temp[i].toString() + " ");
-        }
-        System.out.println();
-    }
 
     public int size() {
-        return size;
+        return (next - prev + capacity) % capacity;
+    }
+
+    public boolean isFull() {
+        return size() == capacity - 1;
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return prev == next;
     }
 
-    public T get(int index) {
-        if (index > size) {
-            return null;
+    private boolean isLowUsageRate() {
+        return capacity >= 16 && size() / (double) capacity < 0.25;
+    }
+
+    private void resize(int newSize) {
+        T[] temp = (T[]) new Object[newSize];
+
+        int size = size();
+        if (prev < next) {
+            for (int i = prev, j = 0; i < next && j < size; i++, j++) {
+                temp[j] = items[i];
+            }
+        } else if (prev > next) {
+            int j = 0;
+            for (int i = prev; j < capacity - prev; i++, j++) {
+                temp[j] = items[i];
+            }
+            for (int i = 0; j < size; i++, j++) {
+                temp[j] = items[i];
+            }
         }
-        int first = nextFirst + 1;
-        if (index + first < items.length) {
-            return items[index + first];
-        } else {
-            return items[index - items.length + first];
-        }
+        prev = 0;
+        next = size;
+        items = temp;
+        capacity = newSize;
     }
 }
