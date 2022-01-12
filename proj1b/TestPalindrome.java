@@ -11,7 +11,7 @@ public class TestPalindrome {
 
     @Test
     public void testWordToDeque() {
-        Deque<Character> d;
+        Deque d;
         d = palindrome.wordToDeque("persiflage");
         String actual = "";
         for (int i = 0; i < "persiflage".length(); i++) {
@@ -39,5 +39,14 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("&", offByOne));
     }
 
-    
+    @Test
+    public void testPalindromeByN() {
+        OffByN offByN = new OffByN(6);
+        assertTrue(palindrome.isPalindrome("gmdjgm", offByN));
+        assertFalse(palindrome.isPalindrome("aaabbbaa", offByN));
+        assertTrue(palindrome.isPalindrome("", offByN));
+        assertTrue(palindrome.isPalindrome("&", offByN));
+    }
+
+
 }
