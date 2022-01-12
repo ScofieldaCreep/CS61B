@@ -131,4 +131,13 @@ public class LinkedListDeque<Item> implements Deque<Item> {
         }
     }
 
+    @Override
+    public Item getFirst() {
+        return get(0);
+    }
+
+    @Override
+    public Item getLast() {
+        return get(size()-1);
+    }
 }

@@ -76,6 +76,7 @@ public class ArrayDeque<Item> implements Deque<Item> {
         size++;
     }
 
+    @Override
     public Item getFirst() {
         return items[plusOne(nextFront)];
     }
@@ -101,6 +102,7 @@ public class ArrayDeque<Item> implements Deque<Item> {
         size++;
     }
 
+    @Override
     public Item getLast() {
         return items[minusOne(nextBack)];
     }

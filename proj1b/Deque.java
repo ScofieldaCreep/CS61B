@@ -15,4 +15,8 @@ public interface Deque<Item> {
 
     Item get(int index);
 
+    Item getLast();
+
+    Item getFirst();
+
 }
