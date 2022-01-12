@@ -27,11 +27,11 @@ public class Palindrome {
 //        }
 
         // Recursive
-        Deque<Character> target = wordToDeque(word);
+        Deque target = wordToDeque(word);
         return isPalindromeHelper(target);
     }
 
-    private boolean isPalindromeHelper(Deque<Character> target) {
+    private boolean isPalindromeHelper(Deque target) {
         if (target.size() <= 1) {
             return true;
         } else if (target.removeFirst() != target.removeLast()) {
@@ -43,14 +43,14 @@ public class Palindrome {
     /* return true if the word is a palindrome according to the character comparison test
     provided by the CharacterComparator passed in as argument cc. */
     public boolean isPalindrome(String word, CharacterComparator cc) {
-        Deque<Character> target = wordToDeque(word);
+        Deque target = wordToDeque(word);
         return isPalindromeHelper(target, cc);
     }
 
-    private boolean isPalindromeHelper(Deque<Character> target, CharacterComparator cc) {
+    private boolean isPalindromeHelper(Deque target, CharacterComparator cc) {
         if (target.size() <= 1) {
             return true;
-        } else if (!cc.equalChars(target.removeFirst(), target.removeLast())) {
+        } else if (!cc.equalChars((char)target.removeFirst(), (char)target.removeLast())) {
             return false;
         }
         return isPalindromeHelper(target, cc);
