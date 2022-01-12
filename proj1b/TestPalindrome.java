@@ -11,8 +11,7 @@ public class TestPalindrome {
 
     @Test
     public void testWordToDeque() {
-        Deque d;
-        d = palindrome.wordToDeque("persiflage");
+        Deque d = (Deque) palindrome.wordToDeque("persiflage");
         String actual = "";
         for (int i = 0; i < "persiflage".length(); i++) {
             actual += d.removeFirst();

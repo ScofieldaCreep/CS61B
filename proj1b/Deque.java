@@ -1,4 +1,4 @@
-public interface Deque<Item> {
+interface Deque<Item> {
     void addFirst(Item item);
 
     void addLast(Item item);

@@ -138,6 +138,6 @@ public class LinkedListDeque<Item> implements Deque<Item> {
 
     @Override
     public Item getLast() {
-        return get(size()-1);
+        return get(size() - 1);
     }
 }

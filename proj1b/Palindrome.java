@@ -1,7 +1,3 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
-
 public class Palindrome {
     public Deque<Character> wordToDeque(String word) {
         Deque<Character> res = new ArrayDeque<>();
@@ -50,7 +46,7 @@ public class Palindrome {
     private boolean isPalindromeHelper(Deque target, CharacterComparator cc) {
         if (target.size() <= 1) {
             return true;
-        } else if (!cc.equalChars((char)target.removeFirst(), (char)target.removeLast())) {
+        } else if (!cc.equalChars((char) target.removeFirst(), (char) target.removeLast())) {
             return false;
         }
         return isPalindromeHelper(target, cc);
