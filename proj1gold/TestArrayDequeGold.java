@@ -1,110 +1,57 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
-import java.util.List;
-import java.util.ArrayList;
-
 
 public class TestArrayDequeGold {
     @Test
-    public void testRandom() {
-        ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
-        StudentArrayDeque<Integer> own = new StudentArrayDeque<>();
-
-        // test addLast
-        for (int i = 0; i < 100; i++) {
-            int random = StdRandom.uniform(100);
-            right.addLast(random);
-            own.addLast(random);
-        }
-
-        for (int i = 0; i < 100; i++) {
-            int expect = right.get(i);
-            int actual = own.get(i);
-            assertEquals("Fuck!\nRandom number in addLast() is " + expect + "but yours is " + actual,
-                    expect, actual);
-        }
-
-        // test addFirst
-        for (int i = 0; i < 100; i++) {
-            int random = StdRandom.uniform(100);
-            right.addFirst(random);
-            own.addFirst(random);
-        }
-
-        for (int i = 0; i < 100; i++) {
-            int expect = right.get(i);
-            int actual = own.get(i);
-            assertEquals("Fuck!\nRandom number in addFirst() is " + expect + "but yours is " + actual,
-                    expect, actual);
-        }
-
-        // removeFirst
-        List<Integer> actualList = new ArrayList<>();
-        List<Integer> expectedList = new ArrayList<>();
-        for (int i=0; i<10; i++) {
-            actualList.add(own.removeFirst());
-            expectedList.add(right.removeFirst());
-        }
-        for (int i=0; i<10; i++) {
-            int actual = own.get(i);
-            int expect = right.get(i);
-            assertEquals("Fuck!\nRandom number in addFirst() is " + expect + "but yours is " + actual,
-                    expect, actual);
-        }
-        for (int i=0; i<10; i++) {
-            int actual = actualList.get(i);
-            int expect = expectedList.get(i);
-            assertEquals("Fuck!\nRandom number in addFirst() is " + expect + "but yours is " + actual,
-                    expect, actual);
-        }
-
-        // removeLast
-        actualList.clear();
-        expectedList.clear();
-        for (int i=0; i<10; i++) {
-            actualList.add(own.removeLast());
-            expectedList.add(right.removeLast());
-        }
-
-        int actual = own.size();
-        int expected = right.size();
-        assertEquals("Oh noooo!\nThis is bad in removeLast():\n   actual size " + actual
-                        + " not equal to " + expected + "!",
-                expected, actual);
-        for (int i=0; i<10; i++) {
-            assertEquals("Oh noooo!\nThis is bad in removeLast():\n   Random number " + actualList.get(i)
-                            + " not equal to " +  expectedList.get(i) + "!",
-                    expectedList.get(i), actualList.get(i));
-        }
-    }
-
-
-    @Test
-    public void testArrayDeque2() {
-        ArrayDequeSolution<Integer> ads = new ArrayDequeSolution<>();
+    public void test() {
         StudentArrayDeque<Integer> sad = new StudentArrayDeque<>();
-        int random = StdRandom.uniform(100);
-        ads.addFirst(random);
-        sad.addFirst(random);
-        assertEquals("addFirst("+random+")", ads.get(0), sad.get(0));
-        System.out.println("addFirst("+random+")");
+        ArrayDequeSolution<Integer> ads = new ArrayDequeSolution<>();
 
-        random = StdRandom.uniform(100);
-        ads.addLast(random);
-        sad.addLast(random);
-        assertEquals("addLast("+random+")", ads.get(1), sad.get(1));
-        System.out.println("addLast("+random+")");
+        StringBuilder msg = new StringBuilder();
 
-        int actual = ads.removeFirst();
-        int expected = ads.removeFirst();
-        assertEquals("removeFirst()", actual, expected);
-        System.out.println("removeFirst()");
+        int s = 0;
+        for (int i = 0; i < 500; i++) {
+            if (i % 5 == 0) {
+                msg.append("size()\n");
+                assertEquals(msg.toString(), ads.size(), sad.size());
+            }
 
-        actual = ads.removeLast();
-        expected = sad.removeLast();
-        assertEquals("removeLast()", actual, expected);
-        System.out.println("removeLast()");
+            double selector = StdRandom.uniform();
+            if (selector < 0.25) {
+                sad.addFirst(i);
+                ads.addFirst(i);
+                s++;
+                msg.append("addFirst(" + i + ")\n");
+                assertEquals(msg.toString(), ads.get(0), sad.get(0));
+            } else if (selector < 0.5) {
+                sad.addLast(i);
+                ads.addLast(i);
+                s++;
+                msg.append("addLast(" + i + ")\n");
+                assertEquals(msg.toString(), ads.get(s - 1), sad.get(s - 1));
+            } else if (selector < 0.75) {
+                if (ads.isEmpty()) {
+                    msg.append("isEmpty()\n");
+                    assertTrue(msg.toString(), sad.isEmpty());
+                    continue;
+                }
+                Integer x = ads.removeFirst();
+                Integer y = sad.removeFirst();
+                s--;
+                msg.append("removeFirst()\n");
+                assertEquals(msg.toString(), x, y);
+            } else {
+                if (ads.isEmpty()) {
+                    msg.append("isEmpty()\n");
+                    assertTrue(msg.toString(), sad.isEmpty());
+                    continue;
+                }
+                Integer x = ads.removeLast();
+                Integer y = sad.removeLast();
+                s--;
+                msg.append("removeLast()\n");
+                assertEquals(msg.toString(), x, y);
+            }
+        }
     }
-
 }
-
