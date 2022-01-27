@@ -49,7 +49,13 @@ public class MemoryGame {
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.length() < n) {
+            sb.append(CHARACTERS[rand.nextInt(CHARACTERS.length)]);
+        }
+
+        return sb.toString();
     }
 
     public void drawFrame(String s) {
@@ -79,17 +85,57 @@ public class MemoryGame {
 
     public void flashSequence(String letters) {
         //TODO: Display each character in letters, making sure to blank the screen between letters
+        for (int i = 0; i < letters.length(); i++) {
+            drawFrame(letters.substring(i, i + 1));
+            StdDraw.pause(750);
+            drawFrame("");
+            StdDraw.pause(750);
+        }
     }
 
     public String solicitNCharsInput(int n) {
         //TODO: Read n letters of player input
-        return null;
+        String input = "";
+        drawFrame(input);
+
+        while (input.length() < n) {
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            char key = StdDraw.nextKeyTyped();
+            input += String.valueOf(key);
+            drawFrame(input);
+        }
+        StdDraw.pause(500);
+        return input;
     }
 
     public void startGame() {
         //TODO: Set any relevant variables before the game starts
-
+        gameOver = false;
+        playerTurn = false;
+        round = 1;
         //TODO: Establish Game loop
+        while (!gameOver) {
+            playerTurn = false;
+            drawFrame("Round " + round + "! Good luck!");
+            StdDraw.pause(1500);
+
+            String roundString = generateRandomString(round);
+            flashSequence(roundString);
+
+            playerTurn = true;
+            String userInput = solicitNCharsInput(round);
+
+            if (!userInput.equals(roundString)) {
+                gameOver = true;
+                drawFrame("Game Over! Final Level: " + round);
+            } else {
+                drawFrame("Correct, well done!");
+                StdDraw.pause(1500);
+                round += 1;
+            }
+        }
     }
 
 }
