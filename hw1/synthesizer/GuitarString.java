@@ -1,7 +1,4 @@
-// TODO: Make sure to make this class a part of the synthesizer package
 package synthesizer;
-
-import edu.princeton.cs.algs4.StdAudio;
 
 public class GuitarString {
     /** Constants. Do not change. In case you're curious, the keyword final means

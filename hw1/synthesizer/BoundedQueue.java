@@ -1,7 +1,5 @@
 package synthesizer;
 
-import java.util.Iterator;
-
 //define the contract that any BoundedQueue must follow
 public interface BoundedQueue<T> extends Iterable<T> {
 

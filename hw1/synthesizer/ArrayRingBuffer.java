@@ -1,10 +1,7 @@
-// TODO: Make sure to make this class a part of the synthesizer package
 package synthesizer;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
-//TODO: Make sure to make this class and all of its methods public
 public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;
@@ -57,7 +54,6 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update
         if (isEmpty()) {
             throw new RuntimeException("Ring Buffer Underflow");
         }
@@ -85,11 +81,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         return new ArrayBufferIterator();
     }
 
-    private class ArrayBufferIterator implements Iterator<T> {
+    public class ArrayBufferIterator implements Iterator<T> {
         private int position;
         private int count;
 
-        public ArrayBufferIterator() {
+        ArrayBufferIterator() {
             position = first;
             count = 0;
         }
@@ -105,6 +101,4 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             return returnItem;
         }
     }
-
-    // TODO: When you get to part 5, implement the needed code to support iteration.
 }

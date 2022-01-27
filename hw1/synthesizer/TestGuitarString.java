@@ -2,15 +2,12 @@ package synthesizer;
 
 /* Since this test is part of a package, we have to import the package version of StdAudio. */
 /* Don't worry too much about this, we'll get there in due time. */
-import edu.princeton.cs.introcs.StdAudio;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /** Tests the GuitarString class.
  *  @author Josh Hug
  */
-
+/*
 public class TestGuitarString {
     @Test
     public void testPluckTheAString() {
@@ -50,10 +47,10 @@ public class TestGuitarString {
         // for assertEquals(double, double)
         assertEquals(expected, s5, 0.001);
 
-    }
+    }*/
 
-    /** Calls tests for GuitarString. */
+/*    *//** Calls tests for GuitarString. *//*
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestGuitarString.class);
     }
-} 
+} */
